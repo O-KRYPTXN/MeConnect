@@ -3,10 +3,10 @@ import { protectRoute } from "../middleware/auth.middleware.js";
 import { getUserConnections , getConnectionRequests , getConnectionStatus ,
      sendConnectionRequest , acceptConnectionRequest , rejectConnectionRequest , 
      deleteConnection }
-      from "../controllers/notification.controller.js";
+      from "../controllers/connection.controller.js";
 
 
-const router = express.Router();
+const router = express.Router(); //
 
 router.get("/",protectRoute,getUserConnections);
 router.get("/requests",protectRoute,getConnectionRequests);
