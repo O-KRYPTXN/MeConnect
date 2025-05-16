@@ -112,7 +112,7 @@ export const createComment = async (req,res)=>{
             {
                 $push:{comments:{user:req.user._id,content}}
             },
-            {new:true}).populate("author" , "first_name last_name headline profilePic");
+            {new:true}).populate("author" , "username first_name last_name headline profilePic");
         
         if(post.author._id.toString() !== req.user._id.toString() ){
             const newNotification = new Notification({
@@ -168,6 +168,8 @@ export const likePost = async (req,res)=>{
         res.status(500).json({message:"something went wrong"});
     }
 }
+
+
 
 export const sharePost = async (req, res) => {
   try {
