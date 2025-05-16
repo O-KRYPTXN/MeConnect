@@ -27,6 +27,10 @@ const postSchema = new mongoose.Schema({
             default: Date.now,
         },
     }],
+    isShared: { type: Boolean, default: false },
+    
+    originalPost: { type: mongoose.Schema.Types.ObjectId, ref: "Post" }, 
+
 },{timestamps:true});
 
 const Post = mongoose.model("Post", postSchema);

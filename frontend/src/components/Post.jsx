@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { Loader, Trash ,Heart , MessageCircle , Share ,Send } from "lucide-react";
+import { Loader, Trash ,Heart , MessageCircle , Share ,Send, Share2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import PostAction from "./PostAction";
 import {formatDistanceToNow} from "date-fns";
@@ -175,7 +175,7 @@ const Post = ({post}) => {
                     />
 
                     <PostAction
-                    icon={<Share/>}
+                    icon={<Share2/>}
                     />
                 </div>
              </div>

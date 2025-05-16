@@ -1,7 +1,7 @@
 import { useQuery , useQueryClient , useMutation } from '@tanstack/react-query';
 import axiosInstance from '../lib/axios';
 import { toast } from 'react-hot-toast';
-import { UserPlus ,MessageSquare ,ThumbsUp ,Trash2 ,ExternalLink , Eye} from 'lucide-react';
+import { UserPlus ,MessageSquare ,ThumbsUp ,Trash2 ,ExternalLink , Eye , Mail } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Sidebar from '../components/SideBar';
 import { formatDistanceToNow } from 'date-fns';
@@ -49,72 +49,88 @@ const NotificationPage = () => {
             },
         });
 
-    	const renderNotificationIcon = (type) => {
-		switch (type) {
-			case "like":
-				return <ThumbsUp className='text-blue-500' />;
+        const renderNotificationIcon = (type) => {
+          switch (type) {
+            case "like":
+              return <ThumbsUp className="text-blue-500" />;
 
-			case "comment":
-				return <MessageSquare className='text-green-500' />;
-			case "connectionAccepted":
-				return <UserPlus className='text-purple-500' />;
-			default:
-				return null;
-		}
-	    };
+            case "comment":
+              return <MessageSquare className="text-green-500" />;
+
+            case "connectionAccepted":
+              return <UserPlus className="text-purple-500" />;
+
+            case "message":
+              return <Mail className="text-yellow-500" />;  // icon for message notification
+
+            default:
+              return null;
+          }
+        };
 
       
         	const renderNotificationContent = (notification) => {
-		switch (notification.type) {
-			case "like":
-				return (
-          <Link to={`/post/${notification.relatedUser.username}`}>
-					<span>
-						<strong>{notification.relatedUser.first_name + " " + notification.relatedUser.last_name}</strong> liked your post
-					</span>
-          </Link>
-				);
-			case "comment":
-				return (
-					<span>
-						<Link to={`/profile/${notification.relatedUser.username}`} className='font-bold'>
-							{notification.relatedUser.first_name + " " + notification.relatedUser.last_name}
-              
-						</Link>{" "}
-						commented on your post
-					</span>
-				);
-			case "connectionAccepted":
-				return (
-					<span>
-						<Link to={`/profile/${notification.relatedUser.username}`} className='font-bold'>
-							{notification.relatedUser.first_name + " " + notification.relatedUser.last_name}
-						</Link>{" "}
-						accepted your connection request
-					</span>
-				);
-			default:
-				return null;
-		}
+              switch (notification.type) {
+                case "like":
+                  return (
+                    <Link to={`/post/${notification.relatedUser.username}`}>
+                    <span>
+                      <strong>{notification.relatedUser.first_name + " " + notification.relatedUser.last_name}</strong> liked your post
+                    </span>
+                    </Link>
+                  );
+                case "comment":
+                  return (
+                    <span>
+                      <Link to={`/profile/${notification.relatedUser.username}`} className='font-bold'>
+                        {notification.relatedUser.first_name + " " + notification.relatedUser.last_name}
+                        
+                      </Link>{" "}
+                      commented on your post
+                    </span>
+                  );
+                case "connectionAccepted":
+                  return (
+                    <span>
+                      <Link to={`/profile/${notification.relatedUser.username}`} className='font-bold'>
+                        {notification.relatedUser.first_name + " " + notification.relatedUser.last_name}
+                      </Link>{" "}
+                      accepted your connection request
+                    </span>
+                  );
+                   case "message":
+                    return (
+                      <span>
+                        <Link to={`/profile/${notification.relatedUser.username}`} className='font-bold'>
+                          {notification.relatedUser.first_name + " " + notification.relatedUser.last_name}
+                        </Link>{" "}
+                          
+                        sent you a message: <em>"{notification.messageContent}"</em>
+                        {console.log(notification)}
+                      </span>
+                    );
+                default:
+                  return null;
+              }
 	};
 
     	const renderRelatedPost = (relatedPost) => {
-		if (!relatedPost) return null;
+        if (!relatedPost) return null;
 
-		return (
-			<Link
-				to={`/post/${relatedPost._id}`}
-				className='mt-2 p-2 bg-gray-50 rounded-md flex items-center space-x-2 hover:bg-gray-100 transition-colors'
-			>
-				{relatedPost.image && (
-					<img src={relatedPost.image} alt='Post preview' className='w-10 h-10 object-cover rounded' />
-				)}
-				<div className='flex-1 overflow-hidden'>
-					<p className='text-sm text-gray-600 truncate'>{relatedPost.content}</p>
-				</div>
-				<ExternalLink size={14} className='text-gray-400' />
-			</Link>
-		);
+        return (
+          <Link
+            to={`/post/${relatedPost._id}`}
+            className='mt-2 p-2 bg-gray-50 rounded-md flex items-center space-x-2 hover:bg-gray-100 transition-colors'
+          >
+            {relatedPost.image && (
+              <img src={relatedPost.image} alt='Post preview' className='w-10 h-10 object-cover rounded' />
+            )}
+            <div className='flex-1 overflow-hidden'>
+              <p className='text-sm text-gray-600 truncate'>{relatedPost.content}</p>
+            </div>
+            <ExternalLink size={14} className='text-gray-400' />
+          </Link>
+        );
 	};
 
 

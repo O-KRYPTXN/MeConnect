@@ -1,11 +1,13 @@
 import Notification from "../models/notification.model.js";
 
+
 export const getUserNotifications = async (req, res) => { // "/"
     try {
 
         const notifications = await Notification.find({ recipient: req.user._id })
         .populate("relatedUser", "username first_name last_name profilePic")
         .populate("relatedPost","content image")
+        // .populate("messsage","content")
         .sort({ createdAt: -1 });
 
 
@@ -48,3 +50,41 @@ export const deleteNotification = async (req, res) => { // "/:id/delete"
         res.status(500).json({ message: "something went wrong" });
     }
 };
+
+
+
+export const sendContactMessage = async (req, res) => {
+  try {
+    const { message } = req.body;
+    const { recipientId } = req.params; // ✅ recipient from URL
+    const senderId = req.user._id; // assumes you're using auth middleware to populate req.user
+
+    if (!recipientId || !message) {
+      return res.status(400).json({ message: "Recipient and message are required." });
+    }
+
+    // Optional: check if recipient exists
+    // const recipientExists = await User.findById(recipientId);
+    // if (!recipientExists) {
+    //   return res.status(404).json({ message: "Recipient not found." });
+    // }
+
+    const notification = new Notification({
+      recipient: recipientId,
+      type: "message",
+      relatedUser: senderId,
+      messageContent: message.trim(),
+    });
+
+    await notification.save();
+
+    res.status(201).json({ message: "Message sent successfully." });
+
+  } catch (error) {
+    console.error("Error in sendContactMessage:", error);
+    res.status(500).json({ message: "Something went wrong." });
+  }
+};
+
+
+
