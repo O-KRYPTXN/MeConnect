@@ -2,7 +2,8 @@ import mongoose from "mongoose";
 
 const postSchema = new mongoose.Schema({
     author:{
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
         required: true
     },
     content: {
@@ -17,7 +18,7 @@ const postSchema = new mongoose.Schema({
     }],
    comments: [{
         content:{type:String},
-        usr:{
+        user:{
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
         },

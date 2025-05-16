@@ -4,7 +4,7 @@ import Notification from "../models/notification.model.js";
 
 export const sendConnectionRequest = async (req, res) => { 
     try {
-        const { recipientId } = req.params;
+        const  recipientId  = req.params.id;
         const senderId = req.user._id;
 
         if (senderId.equals(recipientId) ) {
@@ -41,7 +41,7 @@ export const sendConnectionRequest = async (req, res) => {
 
 export const acceptConnectionRequest = async (req, res) => {
     try {
-        const { requestId } = req.params;
+        const requestId = req.params.id;
         const userId = req.user._id;
         const connectionRequest = await ConnectionRequest.findById(requestId)
         .populate("sender", "first_name last_name profilePic")
@@ -79,7 +79,7 @@ export const acceptConnectionRequest = async (req, res) => {
 }
 export const rejectConnectionRequest = async(req,res)=>{
     try {
-        const { requestId } = req.params;
+        const requestId  = req.params.id;
         const userId = req.user._id;
         const connectionRequest = await ConnectionRequest.findById(requestId)
        
@@ -108,7 +108,7 @@ export const getConnectionRequests = async (req, res) => {
     try {
 
         const connectionRequests = await ConnectionRequest.find({ recipient: req.user._id ,status : "pending" })
-        .populate("sender", "first_name last_name profilePic").sort({ createdAt: -1 });
+        .populate("sender", "username first_name last_name profilePic").sort({ createdAt: -1 });
 
         res.status(200).json(connectionRequests);
 
@@ -122,7 +122,7 @@ export const getUserConnections = async (req, res) => {
     try {
       const userId = req.user._id
       const user = await User.findById(userId)
-      .populate("connections" , "first_name last_name profilepic connections")
+      .populate("connections" , "username first_name last_name profilepic connections")
       
       if(!user){
         return res.status(404).json({message: "user not found"})

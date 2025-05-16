@@ -7,20 +7,36 @@ import notificationRoutes from "./routes/notification.route.js";
 import { connectDB } from "./lib/db.js";
 import cookieParser from "cookie-parser";
 import connectionRoutes from "./routes/connections.route.js";
+import cors from "cors";
 dotenv.config();
 
 const app =  express();
 const PORT = process.env.PORT || 5000;
 
+app.use(
+  cors({
+    origin: "http://localhost:5173", // or your frontend URL
+    credentials: true
+  }));
+
+
 app.use(express.json({limit:"5mb"})); //for parsing json data
 app.use(cookieParser());
 app.use("/api/v1/auth",authRoutes)
 app.use("/api/v1/users",userRoutes)
-app.use("api/v1/posts",postRoutes)
-app.use("api/v1/notifications",notificationRoutes)
+app.use("/api/v1/posts",postRoutes)
+app.use("/api/v1/notifications",notificationRoutes)
 app.use("/api/v1/connections",connectionRoutes)
+
+// if (process.env.NODE_ENV === "production") {
+// 	app.use(express.static(path.join(__dirname, "/frontend/dist")));
+
+// 	app.get("*", (req, res) => {
+// 		res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
+// 	});
+// }
 
 app.listen(PORT , ()=>{
     console.log(`Server running on port ${PORT}`);
     connectDB();
-});
+}); 

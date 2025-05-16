@@ -4,7 +4,7 @@ import Notification from "../models/notification.model.js";
 
 export const getFeedPosts = async (req,res)=>{
     try {
-        const posts = await Post.find({author:{$in:req.user.connections}}).sort({createdAt:-1})
+        const posts = await Post.find({author:{$in:[...req.user.connections, req.user._id]}}).sort({createdAt:-1})
         .populate("author","first_name last_name profilePic headline")
         .populate("comments.user","first_name last_name profilePic");
 
@@ -54,7 +54,7 @@ export const deletePost = async (req,res)=>{
             return res.status(404).json({message:"post not found"});
          }
 
-         if(post.author.toString()!==userId){
+         if(post.author.toString()!==userId.toString()){
             return res.status(403).json({message:"unauthorized"});
          }
          if(post.image){
@@ -106,7 +106,7 @@ export const createComment = async (req,res)=>{
             },
             {new:true}).populate("author" , "first_name last_name headline profilePic");
         
-        if(post.author.toString() !== req.user._id.toString() ){
+        if(post.author._id.toString() !== req.user._id.toString() ){
             const newNotification = new Notification({
                 recipient:post.author,
                 type:"comment",

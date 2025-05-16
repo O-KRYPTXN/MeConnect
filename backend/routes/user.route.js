@@ -7,6 +7,6 @@ import { getSuggestedConnections ,getPublicProfile , updateProfile } from "../co
  router.get("/suggestions" , protectRoute , getSuggestedConnections);
  router.get("/:username",protectRoute,getPublicProfile);
 
- router.get("/profile" , protectRoute, updateProfile);
+ router.put("/profile" , protectRoute, updateProfile);
 
 export default router;

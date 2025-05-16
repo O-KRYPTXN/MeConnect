@@ -17,21 +17,21 @@ export const getSuggestedConnections = async (req,res)=>{
     }
 }
 
-export const getPublicProfile = async (req,res)=>{
-    try {
+export const getPublicProfile = async (req, res) => {
+	try {
+		const currentUser = await User.findOne({ username: req.params.username }).select("-password");
 
-       const currentUser = await User.findById({username:req.params.username}).select("-password");
+		if (!currentUser) {
+			return res.status(404).json({ message: "User not found" });
+		}
 
-       if(!currentUser){
-        return res.status(404).json({message:"user not found"});
-       }
-       res.json(currentUser);
+		res.json(currentUser);
+	} catch (error) {
+		console.log("error in getPublicProfile", error);
+		res.status(500).json({ message: "Something went wrong" });
+	}
+};
 
-    } catch (error) {
-        console.log("error in getPublicProfile",error);
-        res.status(500).json({message:"something went wrong"});
-    }
-}
 
 export const updateProfile = async (req,res)=>{
     try {
