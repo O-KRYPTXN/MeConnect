@@ -6,7 +6,14 @@ export const getFeedPosts = async (req,res)=>{
     try {
         const posts = await Post.find({author:{$in:[...req.user.connections, req.user._id]}}).sort({createdAt:-1})
         .populate("author","first_name last_name profilePic headline")
-        .populate("comments.user","first_name last_name profilePic");
+        .populate("comments.user","first_name last_name profilePic")
+        .populate({
+        path: "originalPost",
+        populate: {
+          path: "author",
+          select: "first_name last_name username profilePic headline"
+        }
+      });
 
         res.status(200).json(posts);
     } catch (error) {
@@ -76,7 +83,8 @@ export const getPostById = async (req,res)=>{
     try {
         const post = await Post.findById(req.params.id)
         .populate("author","first_name last_name profilePic headline")
-        .populate("comments.user","first_name last_name profilePic username headline");
+        .populate("comments.user","first_name last_name profilePic username headline")
+        .populate('originalPost')
         
         if(!post){
             return res.status(404).json({message:"post not found"});
@@ -160,3 +168,28 @@ export const likePost = async (req,res)=>{
         res.status(500).json({message:"something went wrong"});
     }
 }
+
+export const sharePost = async (req, res) => {
+  try {
+    const originalPost = await Post.findById(req.params.id);
+    if (!originalPost) {
+      return res.status(404).json({ message: "Original post not found" });
+    }
+
+    // Create a new post based on original, but with current user as author
+    const sharedPost = new Post({
+      content: originalPost.content,
+      image: originalPost.image,
+      author: req.user._id,
+      isShared: true,
+      originalPost: originalPost._id, // to track source (optional)
+    });
+
+    await sharedPost.save();
+
+    res.status(201).json(sharedPost);
+  } catch (error) {
+    console.log("error in sharePost", error);
+    res.status(500).json({ message: "something went wrong" });
+  }
+};

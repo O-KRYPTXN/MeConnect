@@ -3,14 +3,17 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { Loader, Trash ,Heart , MessageCircle , Share ,Send } from "lucide-react";
+import { Loader, Trash ,Heart , MessageCircle , Share ,Send, Share2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import PostAction from "./PostAction";
+import SharePostButton from "./SharePostButton";
 import {formatDistanceToNow} from "date-fns";
 
 
 const Post = ({post}) => {
+
     const queryClient = useQueryClient();
+
     const { data: authUser } = useQuery({
     queryKey: ['authUser'],
     queryFn: async () => {
@@ -25,7 +28,7 @@ const Post = ({post}) => {
       }
     },
   });
-    console.log(post);
+    //console.log(post);
     const [showComments, setShowComments] = useState(false);
     const [newComment, setNewComment] = useState('');
     const [comments , setComments]= useState(post.comments || []);
@@ -71,6 +74,8 @@ const Post = ({post}) => {
         },
     })
 
+
+
     const handleDeletePost=()=>{
         if(window.confirm("Are you sure you want to delete this post?")){
             deletePost();
@@ -105,6 +110,7 @@ const Post = ({post}) => {
 		}
 	};
 
+    
 
 
 
@@ -149,17 +155,44 @@ const Post = ({post}) => {
                 )}
                 </div>
 
-                {/* Post Content */}
-                <p className="text-base mb-3 text-gray-200">{post.content}</p>
-
-                {/* Post Image */}
-                {post.image && (
-                <img
-                    src={post.image}
-                    alt="Post"
-                    className="w-full rounded-lg border border-base-100 mb-2"
-                />
+                                {post.isShared ? (
+                post.originalPost ? (
+                    <div className="bg-base-200 rounded-lg p-4 border border-info mb-4">
+                    <p className="italic text-sm text-info mb-2">
+                        Shared post from{" "}
+                        <Link to={`/profile/${post.originalPost.author.username}`} className="underline">
+                        {post.originalPost.author.first_name + " " + post.originalPost.author.last_name}
+                        </Link>
+                        {console.log(post.originalPost)}
+                    </p>
+                    <Link to={`/posts/${post.originalPost._id}`} className="block hover:underline mb-2">
+                        {post.originalPost.content}
+                    </Link>
+                    {post.originalPost.image && (
+                        <img
+                        src={post.originalPost.image}
+                        alt="Shared post"
+                        className="w-full rounded-lg border border-base-100"
+                        />
+                    )}
+                    </div>
+                ) : (
+                    <p className="italic text-sm text-gray-400">Original post not available</p>
+                )
+                ) : (
+                <>
+                    <p className="text-base mb-3 text-gray-200">{post.content}</p>
+                    {post.image && (
+                    <img
+                        src={post.image}
+                        alt="Post"
+                        className="w-full rounded-lg border border-base-100 mb-2"
+                    />
+                    )}
+                </>
                 )}
+
+
                 <div className="flex justify-between text-info">
                     <PostAction
                     icon={<Heart size={18} className={isLiked ? "text-red-500" : ""} /> }
@@ -173,10 +206,15 @@ const Post = ({post}) => {
                     text={post.comments.length}
                     onClick={() => setShowComments(!showComments)}
                     />
+                
+                {!post.isShared &&( 
 
-                    <PostAction
-                    icon={<Share/>}
-                    />
+                    <div className="mt-4">
+                    <SharePostButton postId={post._id} />
+                 </div>
+                )}
+                
+                 
                 </div>
              </div>
             {showComments && (
