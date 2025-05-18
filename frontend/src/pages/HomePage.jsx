@@ -80,7 +80,7 @@ const HomePage = () => {
       </div>
         {recommendedUsers?.length > 0 && (
           <div className='col-span-1 lg:col-span-1 hidden lg:block'>
-            <div className='bg-secondary rounded-lg shadow p-4'>
+            <div className='bg-[#4a5d7f] rounded-lg shadow p-4'>
               <h2 className='font-semibold text-lg text-center mb-4 border-b pb-2'>People you may know</h2>
               <div className='space-y-4'>
                 {recommendedUsers.map((user) => (

@@ -3,7 +3,7 @@ import { Home, UserPlus, Bell } from "lucide-react";
 
 export default function Sidebar({ user }) {
 	return (
-		<div className="bg-secondary rounded-xl shadow-md overflow-hidden w-64 text-sm">
+		<div className="bg-[#1e1e2f] rounded-xl shadow-md overflow-hidden w-64 text-sm">
 			{/* Profile Section */}
 			<div className="text-center relative">
 				<div
@@ -15,7 +15,7 @@ export default function Sidebar({ user }) {
 
 				<Link to={`/profile/${user.username}`}>
 					<img
-						src={user.profilePicture || "/avatar.png"}
+						src={user.profilePic || "/avatar.png"}
 						alt={user.username}
 						className="w-16 h-16 rounded-full mx-auto absolute left-1/2 top-10 transform -translate-x-1/2 border-2 border-white bg-white shadow-sm transition-transform duration-200 hover:scale-105"
 					/>

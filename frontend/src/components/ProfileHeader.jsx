@@ -89,11 +89,10 @@ const ProfileHeader = ({ userData, onSave, isOwnProfile }) => {
 		},
 	});
 
-    const getConnectionStatus = useMemo(() => {
-		if (isConnected) return "connected";
-		if (!isConnected) return "not_connected";
-		return connectionStatus?.status;
-	}, [isConnected, connectionStatus]);
+const getConnectionStatus = useMemo(() => {
+    if (connectionStatus?.status) return connectionStatus.status;
+    return "not_connected";
+}, [connectionStatus]);
 
 
             const renderConnectionButton = () => {
@@ -172,7 +171,7 @@ const ProfileHeader = ({ userData, onSave, isOwnProfile }) => {
 
 
   return (
-		<div className='bg-white shadow rounded-lg mb-6'>
+		<div className='bg-[#1e1e1e] shadow rounded-lg mb-6'>
 			<div
 				className='relative h-48 rounded-t-lg bg-cover bg-center'
 				style={{
@@ -181,7 +180,7 @@ const ProfileHeader = ({ userData, onSave, isOwnProfile }) => {
 			>
 				{isEditing && (
 					<label className='absolute top-2 right-2 bg-white p-2 rounded-full shadow cursor-pointer'>
-						<Camera size={20} />
+						<Camera size={20} color="#1e1e1e"/>
 						<input
 							type='file'
 							className='hidden'
@@ -203,7 +202,7 @@ const ProfileHeader = ({ userData, onSave, isOwnProfile }) => {
 
 					{isEditing && (
 						<label className='absolute bottom-0 right-1/2 transform translate-x-16 bg-white p-2 rounded-full shadow cursor-pointer'>
-							<Camera size={20} />
+							<Camera size={20} color="#1e1e1e" />
 							<input
 								type='file'
 								className='hidden'

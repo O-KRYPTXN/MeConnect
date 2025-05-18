@@ -71,3 +71,32 @@ export const updateProfile = async (req,res)=>{
         res.status(500).json({message:"something went wrong"});
     }
 }
+
+
+export const searchUsers = async (req,res)=>{
+const { query } = req.query;
+
+  if (!query || query.trim() === "") {
+    return res.status(400).json({ message: "Query is required" });
+  }
+
+  const regex = new RegExp(query, "i"); // case-insensitive search
+
+  try {
+    const users = await User.find({
+      $or: [
+          { first_name: regex }
+        , { last_name: regex },
+          { username: regex }],
+    }).select("first_name last_name username profilePic headline");
+
+    if (users.length === 0) {
+      return res.status(404).json({ message: "No users found" });
+    }
+
+    res.json(users);
+  } catch (error) {
+    console.error("Error in user search:", error);
+    res.status(500).json({ message: "Something went wrong" });
+  }
+}

@@ -31,13 +31,13 @@ const userSchema = new mongoose.Schema({
         default : "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
     },headline : {
         type : String,
-        default : "Update your headline"
+        default : ""
     },location : {
         type : String,
-        default : "Update your location"
+        default : ""
     },about : {
         type : String,
-        default : "Update your about"
+        default : ""
     },skills:[String],
     experience : [{
         company : String,
@@ -45,7 +45,7 @@ const userSchema = new mongoose.Schema({
         from : Date,
         to : Date,
         description: String
-    }],edcuation : [{
+    }],education : [{
         school : String,
         field : String,
         from : Date,

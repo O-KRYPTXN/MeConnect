@@ -122,7 +122,7 @@ export const getUserConnections = async (req, res) => {
     try {
       const userId = req.user._id
       const user = await User.findById(userId)
-      .populate("connections" , "username first_name last_name profilepic connections")
+      .populate("connections" , "username first_name last_name profilePic connections")
       
       if(!user){
         return res.status(404).json({message: "user not found"})

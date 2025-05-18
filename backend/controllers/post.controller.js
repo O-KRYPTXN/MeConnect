@@ -5,8 +5,8 @@ import Notification from "../models/notification.model.js";
 export const getFeedPosts = async (req,res)=>{
     try {
         const posts = await Post.find({author:{$in:[...req.user.connections, req.user._id]}}).sort({createdAt:-1})
-        .populate("author","first_name last_name profilePic headline")
-        .populate("comments.user","first_name last_name profilePic")
+        .populate("author","username first_name last_name profilePic headline")
+        .populate("comments.user","username first_name last_name profilePic")
         .populate({
         path: "originalPost",
         populate: {
@@ -84,7 +84,13 @@ export const getPostById = async (req,res)=>{
         const post = await Post.findById(req.params.id)
         .populate("author","first_name last_name profilePic headline")
         .populate("comments.user","first_name last_name profilePic username headline")
-        .populate('originalPost')
+        .populate({
+        path: "originalPost",
+        populate: {
+                    path: "author",
+                    select: "first_name last_name username profilePic headline"
+        }
+         });
         
         if(!post){
             return res.status(404).json({message:"post not found"});
@@ -189,9 +195,73 @@ export const sharePost = async (req, res) => {
 
     await sharedPost.save();
 
+        // ✅ Create notification (if not sharing your own post)
+    if (originalPost.author.toString() !== req.user._id.toString()) {
+      const notification = new Notification({
+        recipient: originalPost.author,
+        type: "share",
+        relatedUser: req.user._id,
+        relatedPost: originalPost._id
+      });
+      await notification.save() 
+    }
+    
+
     res.status(201).json(sharedPost);
+
   } catch (error) {
     console.log("error in sharePost", error);
     res.status(500).json({ message: "something went wrong" });
+  }
+};
+
+
+
+export const getPostsByUserId = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+
+    // Fetch posts created by the user, most recent first
+    const posts = await Post.find({ author: userId })
+      .sort({ createdAt: -1 })
+        .populate("author","first_name last_name profilePic username headline")
+        .populate("comments.user","first_name last_name profilePic username headline")
+        .populate({
+            path: "originalPost",
+            populate: {
+                    path: "author",
+                    select: "first_name last_name username profilePic headline"
+        }
+         });
+
+        if(posts.length === 0){
+            return res.status(200).json([]);
+        }
+
+    res.status(200).json(posts);
+  } catch (err) {
+    console.error("Error fetching user posts:", err);
+    res.status(500).json({ message: "Failed to fetch user's posts" });
+  }
+};
+
+
+//post content updating 
+
+export const updatePost = async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
+    if (!post) return res.status(404).json({ message: "Post not found" });
+
+    if (post.author.toString() !== req.user._id.toString() ) {
+      return res.status(403).json({ message: "Unauthorized" });
+    }
+
+    post.content = req.body.content || post.content;
+    await post.save();
+
+    res.status(200).json(post);
+  } catch (err) {
+    res.status(500).json({ message: "Error updating post" });
   }
 };

@@ -1,9 +1,11 @@
 import { useQuery  } from '@tanstack/react-query';
 import axiosInstance from '../lib/axios';
-import { UserPlus  } from 'lucide-react';
+import {  UserPlus  } from 'lucide-react';
 import FriendRequest from '../components/FriendRequest';
 import UserCard from '../components/UserCard';
 import Sidebar from '../components/SideBar';
+import Search from '../components/Search';
+
 
 
 const NetworkPage = () => {
@@ -43,6 +45,8 @@ const NetworkPage = () => {
 
 
 
+
+
 return (
   <div className='grid grid-cols-1 lg:grid-cols-4 gap-6'>
     <div className='col-span-1 lg:col-span-1'>
@@ -52,6 +56,8 @@ return (
     <div className='col-span-1 lg:col-span-3'>
       <div className='bg-[#1e1e1e] rounded-lg shadow-md p-6 mb-6 border border-gray-700'>
         <h1 className='text-2xl font-bold mb-6 text-gray-100'></h1>
+
+        <Search authUser={authUser} />
 
         {connectionRequests?.length > 0 ? (
           <div className='mb-8'>

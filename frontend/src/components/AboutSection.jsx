@@ -15,8 +15,8 @@ const AboutSection = ({ userData, isOwnProfile, onSave }) => {
 	};
 
 	return (
-		<div className='bg-white shadow-lg rounded-2xl p-6 mb-6 border border-gray-100'>
-			<h2 className='text-2xl font-bold text-gray-800 mb-4'>About</h2>
+		<div className='bg-[#1e1e1e] shadow-lg rounded-2xl p-6 mb-6 '>
+			<h2 className='text-2xl font-bold text-white mb-4'>About</h2>
 
 			{isOwnProfile ? (
 				isEditing ? (
@@ -24,7 +24,7 @@ const AboutSection = ({ userData, isOwnProfile, onSave }) => {
 						<textarea
 							value={about}
 							onChange={(e) => setAbout(e.target.value)}
-							className='w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-light'
+							className='w-full p-3 border border-white rounded-md focus:outline-none focus:ring-2 focus:ring-primary-light'
 							rows='5'
 							placeholder='Write something about yourself...'
 						/>
@@ -46,7 +46,7 @@ const AboutSection = ({ userData, isOwnProfile, onSave }) => {
 					</div>
 				) : (
 					<div>
-						<p className='text-gray-700 whitespace-pre-line'>{userData.about || "Nothing added yet."}</p>
+						<p className='text-white whitespace-pre-line'>{userData.about || "Nothing added yet."}</p>
 						<button
 							onClick={() => setIsEditing(true)}
 							className='mt-3 inline-block text-sm text-primary hover:text-primary-dark font-medium transition'

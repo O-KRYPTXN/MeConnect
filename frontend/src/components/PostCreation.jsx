@@ -83,9 +83,9 @@ const PostCreation = ({user}) => {
     };
 
     return (
-        <div className="bg-secondary rounded-lg shadow mb-4 p-4">
+        <div className="bg-[#3a3a5a] rounded-lg shadow mb-4 p-4">
             <div className="flex space-x-3">
-            <img src={user.profilePicture || "/avatar.png"} alt={user.username} className="size-10 rounded-full" />
+            <img src={user.profilePic || "/avatar.png"} alt={user.username} className="size-10 rounded-full" />
             <textarea 
                 placeholder="What's on your mind?"
                 className="w-full focus:outline-none p-3 rounded-lg bg-base-100 hover:bg-base-200 

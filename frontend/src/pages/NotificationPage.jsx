@@ -62,7 +62,9 @@ const NotificationPage = () => {
 
             case "message":
               return <Mail className="text-yellow-500" />;  // icon for message notification
-
+            
+            case "share":
+              return <ExternalLink className="text-pink-500" />;
             default:
               return null;
           }
@@ -73,7 +75,7 @@ const NotificationPage = () => {
               switch (notification.type) {
                 case "like":
                   return (
-                    <Link to={`/post/${notification.relatedUser.username}`}>
+                    <Link to={`/profile/${notification.relatedUser.username}`}>
                     <span>
                       <strong>{notification.relatedUser.first_name + " " + notification.relatedUser.last_name}</strong> liked your post
                     </span>
@@ -109,6 +111,16 @@ const NotificationPage = () => {
                         {console.log(notification)}
                       </span>
                     );
+                    case "share":
+                  return (
+                    <span>
+                      <Link to={`/profile/${notification.relatedUser.username}`} className='font-bold'>
+                        {notification.relatedUser.first_name + " " + notification.relatedUser.last_name}
+                        
+                      </Link>{" "}
+                      shared your post
+                    </span>
+                  );
                 default:
                   return null;
               }
@@ -126,7 +138,7 @@ const NotificationPage = () => {
               <img src={relatedPost.image} alt='Post preview' className='w-10 h-10 object-cover rounded' />
             )}
             <div className='flex-1 overflow-hidden'>
-              <p className='text-sm text-gray-600 truncate'>{relatedPost.content}</p>
+              <p className='text-sm text-gray-600 truncate'>{relatedPost.content.slice(0,25) + "..."}</p>
             </div>
             <ExternalLink size={14} className='text-gray-400' />
           </Link>

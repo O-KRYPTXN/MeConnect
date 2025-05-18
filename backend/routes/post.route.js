@@ -1,16 +1,23 @@
 import express from "express";
 import { protectRoute } from "../middleware/auth.middleware.js";
-import {  getFeedPosts , createPost  , deletePost , getPostById , createComment , likePost ,sharePost } from "../controllers/post.controller.js";
+import {  getFeedPosts , createPost  , deletePost ,
+          getPostById , createComment , likePost  ,
+          sharePost , getPostsByUserId, updatePost} from "../controllers/post.controller.js";
 
-const router = express.Router();        
+const router = express.Router();  
 
+router.get("/user/:userId", protectRoute, getPostsByUserId);
 router.get("/",protectRoute,getFeedPosts);
 router.post("/create",protectRoute,createPost);
 router.delete("/delete/:id",protectRoute,deletePost);
-router.get("/:id" , protectRoute , getPostById);
+
 router.post("/:id/comment",protectRoute, createComment);
 router.post("/:id/like" , protectRoute , likePost)
 
 router.post("/share/:id", protectRoute, sharePost);
+
+router.put("/:id",protectRoute,updatePost)
+
+router.get("/:id" , protectRoute , getPostById);
 
 export default router;

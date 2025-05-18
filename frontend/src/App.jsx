@@ -48,7 +48,7 @@ function AppContent() {
         <Route path='/login' element={!authUser ? <LoginPage /> : <Navigate to='/' />} />
         <Route path='/notifications' element={authUser ? <NotificationPage /> : <Navigate to={'/login'} />} />
         <Route path='/network' element={authUser ? <NetworkPage /> : <Navigate to={'/login'} />} />
-        <Route path='/post/:postId' element={authUser ? <PostPage /> : <Navigate to={'/login'} />} />
+        <Route path='/posts/:postId' element={authUser ? <PostPage /> : <Navigate to={'/login'} />} />
         <Route path='/profile/:username' element={authUser ? <ProfilePage /> : <Navigate to={'/login'} />} />
 
       </Routes>
