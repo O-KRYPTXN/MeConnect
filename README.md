@@ -2,6 +2,12 @@
 
 A modern professional networking platform built with the MERN stack, enabling users to connect, share posts, and grow their professional network.
 
+![React](https://img.shields.io/badge/React-19.1-61DAFB?style=flat&logo=react&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-16+-339933?style=flat&logo=node.js&logoColor=white)
+![Express](https://img.shields.io/badge/Express-5.1-000000?style=flat&logo=express&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-8.14-47A248?style=flat&logo=mongodb&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-yellow?style=flat)
+
 ## 🚀 Features
 
 - **User Authentication**: Secure signup and login with JWT-based authentication
@@ -41,20 +47,61 @@ A modern professional networking platform built with the MERN stack, enabling us
 ```
 MeConnect/
 ├── backend/
-│   ├── controllers/      # Request handlers
-│   ├── models/          # Database schemas
-│   ├── routes/          # API routes
-│   ├── middleware/      # Auth middleware
-│   ├── lib/            # Utilities (DB, Cloudinary)
-│   └── server.js       # Entry point
+│   ├── controllers/
+│   │   ├── auth.controller.js
+│   │   ├── connection.controller.js
+│   │   ├── notification.controller.js
+│   │   ├── post.controller.js
+│   │   └── user.controller.js
+│   ├── models/
+│   │   ├── connectionRequest.model.js
+│   │   ├── notification.model.js
+│   │   ├── post.model.js
+│   │   └── user.model.js
+│   ├── routes/
+│   │   ├── auth.route.js
+│   │   ├── connections.route.js
+│   │   ├── notification.route.js
+│   │   ├── post.route.js
+│   │   └── user.route.js
+│   ├── middleware/
+│   │   └── auth.middleware.js
+│   ├── lib/
+│   │   ├── cloudinary.js
+│   │   └── db.js
+│   └── server.js
 ├── frontend/
 │   ├── src/
-│   │   ├── components/ # Reusable UI components
-│   │   ├── pages/      # Page components
-│   │   ├── lib/        # Axios configuration
-│   │   └── utils/      # Helper functions
-│   └── public/         # Static assets
-└── package.json        # Root dependencies
+│   │   ├── components/
+│   │   │   └── layout/
+│   │   ├── pages/
+│   │   │   ├── auth/
+│   │   │   │   ├── LoginPage.jsx
+│   │   │   │   └── SignUpPage.jsx
+│   │   │   ├── HomePage.jsx
+│   │   │   ├── NetworkPage.jsx
+│   │   │   ├── NotificationPage.jsx
+│   │   │   ├── PostPage.jsx
+│   │   │   └── ProfilePage.jsx
+│   │   ├── lib/
+│   │   │   └── axios.js
+│   │   ├── utils/
+│   │   ├── App.jsx
+│   │   ├── main.jsx
+│   │   └── index.css
+│   ├── public/
+│   ├── index.html
+│   ├── package.json
+│   ├── vite.config.js
+│   ├── tailwind.config.js
+│   └── eslint.config.js
+├── node_modules/
+├── .git/
+├── .gitignore
+├── .gitattributes
+├── package.json
+├── package-lock.json
+└── README.md
 ```
 
 ## 🚦 Getting Started
@@ -170,9 +217,9 @@ npm start
 
 This project is open source and available under the [MIT License](LICENSE).
 
-## 👤 Author
+## 👤 Authors
 
-**Mohamed Ramadan**
+**Mohamed Ramadan**, **Omar Wahid**, **Abdelrahman Ahmed**
 
 ## 🤝 Contributing
 
